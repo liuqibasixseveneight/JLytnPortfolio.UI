@@ -1,0 +1,430 @@
+---
+description: Technology stack, dependency versions, and best practices
+globs: package.json, vite.config.ts, tsconfig*.json, eslint.config.js
+alwaysApply: true
+---
+
+# Technology Stack and Dependencies
+
+This document outlines the technology stack, dependency versions, and best practices for the JLytnPortfolio.UI project.
+
+## Core Framework
+
+### React 19.2.0
+
+- **Version**: `^19.1.1` (package.json) → **19.2.0** (installed)
+- **Status**: Latest stable release with bug fixes and improvements
+- **Key Features**:
+  - React Compiler (automatic memoization) - no manual optimization needed
+  - Server Actions and `useActionState` for form handling
+  - `useFormStatus` and `useOptimistic` hooks for better UX
+  - Improved hydration and error handling with better error messages
+  - Enhanced `ref` as a prop (no longer needs `forwardRef`)
+  - Better support for async components and Suspense
+- **Best Practices**:
+  - **Automatic Memoization**: React 19.2 automatically memoizes components - avoid manual `useMemo`/`useCallback` unless profiling shows it's needed
+  - **Form Handling**: Use `useActionState` for form state management with Server Actions
+  - **Optimistic Updates**: Leverage `useOptimistic` for instant UI updates before server confirmation
+  - **Refs**: Use `ref` directly as a prop instead of `forwardRef` for cleaner code
+  - **Error Boundaries**: Use error boundaries to catch and handle errors gracefully
+  - **Suspense**: Use Suspense for data fetching and code splitting
+  - **Function Components**: Always use function components with hooks (class components are legacy)
+  - **JSX Transform**: Use `react-jsx` transform (configured in tsconfig) - no need to import React
+  - **Strict Mode**: Keep React.StrictMode enabled in development for better error detection
+
+### React DOM 19.2.0
+
+- **Version**: `^19.1.1` (package.json) → **19.2.0** (installed)
+- **Note**: Must match React version exactly (currently 19.2.0)
+- **Best Practices**:
+  - Use `createRoot` API (already configured in `main.tsx`) - legacy `ReactDOM.render` is deprecated
+  - Leverage improved hydration error messages for better debugging
+  - Use `hydrateRoot` for SSR hydration instead of deprecated `hydrate`
+  - Take advantage of improved error boundaries and error reporting
+
+## Build Tool
+
+### Vite 7.2.1
+
+- **Version**: `^7.1.7` (package.json) → **7.2.1** (installed)
+- **Status**: Latest stable release with performance improvements
+- **Features**:
+  - Fast HMR (Hot Module Replacement) with sub-second updates
+  - ESM-first architecture for optimal performance
+  - Optimized production builds with tree-shaking and code splitting
+  - Built-in TypeScript support
+  - CSS preprocessing and PostCSS support
+  - Environment variable handling
+- **Best Practices**:
+  - **ES Modules**: Use ES modules (`type: "module"` in package.json) - required for Vite
+  - **Environment Variables**: Use `import.meta.env` for environment variables (not `process.env`)
+    - Prefix with `VITE_` for client-side variables: `VITE_API_URL`
+    - Use `.env`, `.env.local`, `.env.production` files
+  - **Static Assets**: Place static assets in `public/` for root-relative paths (`/fonts/...`)
+  - **Dynamic Imports**: Use dynamic imports for code splitting: `const Component = lazy(() => import('./Component'))`
+  - **Optimization**: Leverage Vite's automatic optimizations (no manual webpack config needed)
+  - **Plugins**: Use Vite plugins for additional functionality (React, Tailwind, etc.)
+  - **Build Output**: Use `vite build` for production - outputs optimized bundles
+  - **Preview**: Use `vite preview` to test production builds locally
+  - **Path Aliases**: Configure path aliases in `vite.config.ts` if needed (e.g., `@/components`)
+
+### @vitejs/plugin-react-swc 4.2.1
+
+- **Version**: `^4.1.0` (package.json) → **4.2.1** (installed)
+- **Purpose**: React plugin using SWC compiler (faster than Babel)
+- **Benefits**:
+  - **10-20x faster** builds compared to Babel
+  - Faster HMR with instant updates
+  - Automatic JSX transform (no React import needed)
+  - Fast Refresh support for component state preservation
+  - Better TypeScript support
+- **Best Practices**:
+  - No additional configuration needed for most use cases
+  - SWC handles JSX transformation automatically (no Babel config)
+  - Fast Refresh works automatically - preserves component state during HMR
+  - Use with React 19 for optimal performance
+  - SWC is written in Rust, providing native performance
+  - Consider using `@vitejs/plugin-react-swc` over `@vitejs/plugin-react` for better performance
+
+## Styling
+
+### Tailwind CSS 4.1.17
+
+- **Version**: `^4.1.17` (Tailwind CSS v4)
+- **Status**: Major version update with significant changes
+- **Key Changes from v3**:
+  - CSS-first configuration (no JavaScript config file)
+  - New `@import "tailwindcss"` syntax
+  - Improved performance and smaller bundle sizes
+  - Better CSS variable support
+- **Best Practices**:
+  - Use CSS-first configuration approach
+  - Leverage CSS custom properties for theming
+  - Use `@tailwindcss/vite` plugin (already configured)
+  - Prefer utility classes over custom CSS when possible
+  - Use `@apply` sparingly (only for repeated patterns)
+
+### @tailwindcss/vite 4.1.17
+
+- **Version**: `^4.1.17`
+- **Purpose**: Official Vite plugin for Tailwind CSS v4
+- **Best Practices**:
+  - Plugin handles all Tailwind processing
+  - No separate PostCSS configuration needed
+  - Works seamlessly with Vite's HMR
+
+## Animation
+
+### GSAP 3.13.0
+
+- **Version**: `^3.13.0` (package.json)
+- **Status**: Industry-standard animation library
+- **Purpose**: High-performance JavaScript animation library for web animations
+- **Key Features**:
+  - Hardware-accelerated animations (uses GPU when possible)
+  - Timeline-based animation sequencing
+  - ScrollTrigger plugin for scroll-based animations
+  - Morphing, physics, and complex animation effects
+  - Excellent performance and browser compatibility
+  - Small bundle size with tree-shaking support
+- **Best Practices**:
+  - **Import Specific Modules**: Import only what you need to reduce bundle size: `import { gsap } from 'gsap'`
+  - **Use Plugins Selectively**: Import plugins only when needed: `import { ScrollTrigger } from 'gsap/ScrollTrigger'`
+  - **Cleanup Animations**: Always clean up animations in React `useEffect` cleanup functions
+  - **Use Refs**: Use refs to target DOM elements for animations (not direct DOM queries)
+  - **Timeline Management**: Use GSAP timelines for complex animation sequences
+  - **Performance**: GSAP automatically uses GPU acceleration - avoid forcing it manually
+  - **React Integration**: Use `@gsap/react` hooks for better React integration
+  - **Tree Shaking**: Modern bundlers (Vite) automatically tree-shake unused GSAP code
+  - **Animation Context**: Use `gsap.context()` for easier cleanup in React components
+
+### @gsap/react 2.1.2
+
+- **Version**: `^2.1.2` (package.json)
+- **Purpose**: React-specific hooks and utilities for GSAP animations
+- **Key Features**:
+  - `useGSAP` hook for React component lifecycle-aware animations
+  - Automatic cleanup of animations on unmount
+  - Better integration with React's rendering cycle
+  - Context management for animation scopes
+- **Best Practices**:
+  - **useGSAP Hook**: Use `useGSAP` instead of `useEffect` for GSAP animations
+  - **Automatic Cleanup**: `useGSAP` automatically cleans up animations when component unmounts
+  - **Dependency Arrays**: Include dependencies in `useGSAP` dependency array (same as `useEffect`)
+  - **Scope Management**: Use `scope` parameter to target child elements safely
+  - **Context**: Leverage GSAP context for easier animation management
+  - **Performance**: `useGSAP` optimizes animation setup and teardown for React
+  - **Refs**: Use refs with `useGSAP` for targeting DOM elements
+  - **Conditional Animations**: Handle conditional animations properly with dependency arrays
+
+## TypeScript
+
+### TypeScript 5.9.3
+
+- **Version**: `~5.9.3` (pinned minor version)
+- **Status**: Recent stable release
+- **Configuration**:
+  - **tsconfig.app.json**: ES2022 target, strict mode, modern bundler resolution
+  - **tsconfig.node.json**: ES2023 target for Node.js tooling
+- **Key Settings**:
+  - `strict: true` - Full type checking enabled
+  - `moduleResolution: "bundler"` - Modern bundler-aware resolution
+  - `verbatimModuleSyntax: true` - Preserves import/export syntax
+  - `jsx: "react-jsx"` - Modern JSX transform
+- **Best Practices**:
+  - Always use strict mode (already enabled)
+  - Use type annotations for function parameters and return types
+  - Leverage TypeScript's type inference where appropriate
+  - Use `interface` for object shapes, `type` for unions/intersections
+  - Avoid `any` - use `unknown` or proper types instead
+  - Use `as const` for literal types when needed
+  - Enable `noUnusedLocals` and `noUnusedParameters` (already enabled)
+
+## Linting and Code Quality
+
+### ESLint 9.39.1
+
+- **Version**: `^9.36.0` (package.json) → **9.39.1** (installed)
+- **Status**: Latest stable release with flat config format
+- **Configuration**: Flat config in `eslint.config.js` (no `.eslintrc` files)
+- **Best Practices**:
+  - **Flat Config**: Flat config is the new standard (migrated from `.eslintrc` format)
+  - **TypeScript Support**: Use `defineConfig` helper for better TypeScript support and autocomplete
+  - **File Patterns**: Configure rules per file pattern as needed (e.g., `**/*.{ts,tsx}`)
+  - **Rule Configuration**: Use arrays for multiple configs, objects for single configs
+  - **Ignore Patterns**: Use `globalIgnores` for project-wide ignores (e.g., `dist/`, `node_modules/`)
+  - **Extending Configs**: Extend recommended configs from plugins (already configured)
+  - **Running ESLint**: Use `npm run lint` to check all files, or integrate with IDE
+
+### typescript-eslint 8.46.3
+
+- **Version**: `^8.45.0` (package.json) → **8.46.3** (installed)
+- **Purpose**: TypeScript-specific ESLint rules and type-aware linting
+- **Best Practices**:
+  - Use `recommended` config (already enabled) for common TypeScript rules
+  - **Type-Aware Rules**: Leverage type-aware linting rules for better error detection
+  - **Fix TypeScript First**: Fix TypeScript errors before running ESLint (TypeScript errors block linting)
+  - **Strict Rules**: Consider enabling stricter rules for better code quality
+  - **Parser Options**: Configure parser options in ESLint config if needed
+  - **Performance**: Type-aware rules are slower but more accurate - use selectively
+
+### eslint-plugin-react-hooks 5.2.0
+
+- **Version**: `^5.2.0` (package.json) → **5.2.0** (installed)
+- **Purpose**: Enforces React Hooks rules (Rules of Hooks)
+- **Best Practices**:
+  - **Rules of Hooks**: Always follow Rules of Hooks - hooks must be called at the top level
+  - **Exhaustive Deps**: Use `exhaustive-deps` rule for `useEffect` dependencies - prevents stale closures
+  - **Recommended Latest**: Use `recommended-latest` config (already enabled) for React 19 support
+  - **Dependency Arrays**: Always include all dependencies in `useEffect`, `useMemo`, `useCallback`
+  - **Custom Hooks**: Follow the same rules when creating custom hooks
+  - **Conditional Hooks**: Never call hooks conditionally or in loops
+
+### eslint-plugin-react-refresh 0.4.22
+
+- **Version**: `^0.4.22` (package.json) → **0.4.22** (installed)
+- **Purpose**: Ensures components can be safely refreshed with Fast Refresh (HMR)
+- **Best Practices**:
+  - **Export Consistency**: Export components as named exports OR default exports (not both)
+  - **Component Files**: Avoid exporting non-component values from component files
+  - **Vite Config**: Use the `vite` config (already enabled) for Vite projects
+  - **Fast Refresh**: Ensures components can be hot-reloaded without losing state
+  - **Component Naming**: Use PascalCase for component names (required for Fast Refresh)
+
+### @eslint/js 9.39.1
+
+- **Version**: `^9.36.0` (package.json) → **9.39.1** (installed)
+- **Purpose**: Core JavaScript ESLint rules (replaces `eslint:recommended`)
+- **Best Practices**:
+  - Use `recommended` config (already enabled) for common JavaScript rules
+  - Extend with additional rules as needed for your project
+  - Works seamlessly with flat config format
+  - Provides base rules that other plugins can extend
+
+### globals 16.4.0
+
+- **Version**: `^16.4.0` (package.json) → **16.4.0** (installed)
+- **Purpose**: Provides global variable definitions for ESLint
+- **Usage**: `globals.browser` for browser globals (already configured)
+- **Best Practices**:
+  - Use `globals.browser` for browser environments (window, document, etc.)
+  - Use `globals.node` for Node.js environments (if needed)
+  - Use `globals.es2021` or newer for modern JavaScript features
+  - Configure in `languageOptions.globals` in ESLint config
+
+## Type Definitions
+
+### @types/react 19.2.2
+
+- **Version**: `^19.1.16` (package.json) → **19.2.2** (installed)
+- **Note**: Must match React version for compatibility (currently 19.2.0)
+- **Best Practices**:
+  - Keep in sync with React version - update together
+  - Use React 19.2 types for new features (ref as prop, Server Actions, etc.)
+  - Types are automatically included - no need to import types separately
+  - Use `React.FC` sparingly - prefer explicit return types or inference
+  - Leverage React 19's improved type inference
+
+### @types/react-dom 19.2.2
+
+- **Version**: `^19.1.9` (package.json) → **19.2.2** (installed)
+- **Note**: Must match React DOM version for compatibility (currently 19.2.0)
+- **Best Practices**:
+  - Keep in sync with React DOM version - update together
+  - Types include new APIs like `createRoot`, `hydrateRoot`
+  - Use types for better IDE autocomplete and type checking
+
+### @types/node 24.6.0
+
+- **Version**: `^24.6.0` (package.json) → **24.6.0** (installed)
+- **Purpose**: TypeScript definitions for Node.js APIs
+- **Usage**: Used in `vite.config.ts` and other Node.js tooling files
+- **Best Practices**:
+  - Use for Vite config and build scripts only
+  - Not needed in application code (browser-only)
+  - Provides types for Node.js built-in modules (fs, path, etc.)
+  - Keep updated for latest Node.js API support
+
+## Version Management Strategy
+
+### Dependency Version Ranges
+
+- **Production Dependencies**: Use `^` (caret) for minor/patch updates
+- **Development Dependencies**: Use `^` (caret) for flexibility
+- **TypeScript**: Use `~` (tilde) to pin minor version (5.9.x only)
+
+### Update Strategy
+
+1. **Regular Updates**: Run `npm update` for patch/minor updates within version ranges
+2. **Check Outdated**: Use `npm outdated` to see available updates
+3. **Major Updates**: Review changelogs, breaking changes, and test thoroughly
+4. **Security Updates**: Prioritize and update immediately - run `npm audit` regularly
+5. **React/React-DOM**: Update together to maintain compatibility (must match versions)
+6. **Type Definitions**: Keep in sync with their corresponding packages (@types/react with react)
+7. **Lock File**: Commit `package-lock.json` to ensure consistent installs across environments
+8. **Testing**: Always test after updates, especially major version updates
+9. **Gradual Updates**: Update one major dependency at a time to isolate issues
+10. **Version Ranges**: Use `^` for minor/patch updates, `~` for patch-only (TypeScript uses `~`)
+
+## Best Practices Summary
+
+### General
+
+- ✅ Use modern ES modules (`type: "module"` in package.json)
+- ✅ Leverage Vite's fast HMR for development (sub-second updates)
+- ✅ Use TypeScript strict mode (already enabled)
+- ✅ Follow React 19.2 best practices and new features
+- ✅ Use Tailwind CSS v4 CSS-first approach
+- ✅ Use GSAP with `@gsap/react` for high-performance animations
+- ✅ Keep dependencies up to date (especially security patches)
+- ✅ Use React 19's automatic memoization (avoid manual optimization)
+- ✅ Follow Atomic Design for component organization
+
+### Development Workflow
+
+1. **TypeScript First**: Write TypeScript with strict types and proper annotations
+2. **ESLint Integration**: Use ESLint during development (IDE integration recommended)
+3. **Fast Feedback**: Leverage Vite's HMR for instant feedback on changes
+4. **React Optimizations**: Trust React 19's automatic optimizations (no manual memoization)
+5. **Component Structure**: Follow Atomic Design (atoms → molecules → organisms → pages)
+6. **Code Splitting**: Use dynamic imports for route-based code splitting
+7. **Environment Variables**: Use `import.meta.env.VITE_*` for client-side variables
+8. **Animations**: Use `useGSAP` hook from `@gsap/react` for React component animations
+
+### Performance
+
+- **SWC Compiler**: 10-20x faster builds than Babel
+- **Tailwind CSS v4**: Improved performance and smaller bundle sizes
+- **React 19.2 Compiler**: Automatic performance optimizations (no manual work)
+- **Vite 7.2**: Optimized production builds with tree-shaking and code splitting
+- **GSAP**: Hardware-accelerated animations with excellent performance
+- **Fast Refresh**: Preserves component state during HMR
+- **Production Builds**: Always test with `npm run build` for production performance
+
+### Code Quality
+
+- **Strict TypeScript**: Prevents many runtime errors at compile time
+- **ESLint 9.39**: Catches common mistakes and enforces best practices
+- **React Hooks Rules**: Prevents common hook mistakes (Rules of Hooks)
+- **React Refresh**: Ensures components can be safely hot-reloaded
+- **Type-Aware Linting**: TypeScript ESLint provides type-aware rules
+- **Fast Refresh**: Component state preservation during development
+
+## Migration Notes
+
+### React 19.2 Migration
+
+- **From React 18**: Review breaking changes in React 19 release notes
+- **New Hooks**: Update to use new hooks (`useActionState`, `useFormStatus`, `useOptimistic`)
+- **Refs**: Use `ref` as a prop directly (no `forwardRef` needed in most cases)
+- **Memoization**: Remove unnecessary `useMemo`/`useCallback` (React 19.2 handles this automatically)
+- **Server Actions**: Migrate form handling to Server Actions when backend is ready
+- **Error Boundaries**: Update error boundary usage for improved error handling
+- **Hydration**: Use `hydrateRoot` instead of deprecated `hydrate`
+
+### Tailwind CSS v4 Migration
+
+- **No Config File**: No `tailwind.config.js` needed (CSS-first configuration)
+- **Import Syntax**: Update import syntax to `@import "tailwindcss"` in CSS
+- **CSS Variables**: Review CSS variable usage for theming (improved in v4)
+- **Vite Plugin**: Use `@tailwindcss/vite` plugin (already configured)
+- **PostCSS**: No separate PostCSS configuration needed
+
+### ESLint 9 Migration
+
+- **Flat Config**: Uses flat config format (no `.eslintrc` files)
+- **Configuration**: Configuration is in `eslint.config.js` (already migrated)
+- **Modular**: More modular and flexible configuration
+- **TypeScript**: Better TypeScript support with `defineConfig` helper
+- **Plugins**: Plugin configuration is simplified in flat config
+
+### Vite 7.2 Migration
+
+- **ES Modules**: Ensure `type: "module"` in package.json
+- **Environment Variables**: Use `import.meta.env` instead of `process.env`
+- **Static Assets**: Use `/` prefix for public assets (e.g., `/fonts/...`)
+- **Plugins**: Update to latest plugin versions for compatibility
+
+## Security Considerations
+
+- **Regular Updates**: Keep all dependencies up to date, especially security patches
+- **Audit**: Regularly run `npm audit` to check for vulnerabilities
+- **Fix Issues**: Run `npm audit fix` for automatic security fixes (test after)
+- **Review Updates**: Review dependency updates for security patches and breaking changes
+- **Exact Versions**: Use exact versions for critical security-sensitive packages if needed
+- **Lock File**: Commit `package-lock.json` to ensure consistent, secure installs
+- **Dependency Scanning**: Consider using tools like Dependabot or Snyk for automated scanning
+- **React Security**: Follow React security best practices (sanitize user input, use HTTPS, etc.)
+- **Environment Variables**: Never commit sensitive data - use environment variables
+- **Build Security**: Review production build output for exposed secrets or sensitive data
+
+## Performance Considerations
+
+### Build Performance
+
+- **SWC Compiler**: 10-20x faster builds than Babel (written in Rust)
+- **Vite 7.2**: Optimized build pipeline with esbuild and Rollup
+- **Tailwind CSS v4**: Improved build performance and smaller output
+- **TypeScript**: Use `skipLibCheck: true` for faster type checking (already enabled)
+
+### Runtime Performance
+
+- **React 19.2 Compiler**: Automatic performance optimizations (no manual work needed)
+- **Code Splitting**: Use dynamic imports for route-based code splitting
+- **Tree Shaking**: Vite automatically tree-shakes unused code
+- **Production Builds**: Always use production builds (`npm run build`) for performance testing
+- **Bundle Analysis**: Use `vite-bundle-visualizer` to analyze bundle size if needed
+
+### Development Performance
+
+- **Fast HMR**: Vite's HMR provides sub-second updates
+- **Fast Refresh**: React Fast Refresh preserves component state during HMR
+- **TypeScript**: Use incremental compilation (already enabled via tsconfig)
+- **ESLint**: Type-aware rules are slower but more accurate - use selectively
+
+### Best Practices
+
+- **Lazy Loading**: Use `React.lazy()` and `Suspense` for code splitting
+- **Memoization**: Trust React 19's automatic memoization (avoid manual optimization)
+- **Bundle Size**: Monitor bundle size and use dynamic imports for large dependencies
+- **Production Testing**: Always test performance with production builds, not dev builds

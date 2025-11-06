@@ -1,0 +1,178 @@
+---
+description: Project directory structure and important files reference
+globs: **/*
+alwaysApply: true
+---
+
+# Project Structure
+
+This document outlines the directory structure and important files in the JLytnPortfolio.UI project.
+
+## Root Directory Structure
+
+```
+JLytnPortfolio.UI/
+├── .cursor/                    # Cursor IDE configuration
+│   ├── README.md              # Cursor documentation
+│   └── rules/                 # Cursor rules directory
+│       ├── cursor-rules.mdc   # Rule for managing cursor rules
+│       └── project-structure.mdc  # This file
+├── node_modules/              # Dependencies (gitignored)
+├── public/                    # Static assets served from root
+│   └── fonts/                 # Font files
+│       └── JetBrainsMono-*.ttf  # JetBrains Mono font family (16 variants)
+├── src/                       # Source code directory
+│   ├── assets/                # Static assets (images, icons, etc.)
+│   ├── components/            # React components
+│   │   ├── pages/             # Page-level components
+│   │   │   ├── About/         # About page component
+│   │   │   │   ├── About.tsx  # Component implementation
+│   │   │   │   ├── index.ts   # Component barrel export
+│   │   │   │   └── types.ts   # TypeScript type definitions
+│   │   │   ├── Contact/       # Contact page component
+│   │   │   │   ├── Contact.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Home/          # Home page component
+│   │   │   │   ├── Home.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Projects/      # Projects page component
+│   │   │   │   ├── Projects.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Lab/           # Lab page component
+│   │   │   │   ├── Lab.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   └── index.ts       # Page components barrel export
+│   │   └── ui/                # UI component library (Atomic Design)
+│   │       ├── atoms/         # Atomic components (smallest units)
+│   │       │   └── index.ts   # Atoms barrel export
+│   │       ├── molecules/     # Molecular components (composed atoms)
+│   │       │   └── index.ts   # Molecules barrel export
+│   │       ├── organisms/     # Organism components (composed molecules)
+│   │       │   ├── VerticalNavBar/  # Vertical navigation bar component
+│   │       │   │   ├── VerticalNavBar.tsx
+│   │       │   │   ├── index.ts
+│   │       │   │   └── types.ts
+│   │       │   └── index.ts   # Organisms barrel export
+│   │       └── index.ts       # UI components barrel export
+│   ├── App.tsx                # Root React component
+│   ├── config.ts              # Application configuration
+│   ├── index.css              # Global styles and font declarations
+│   └── main.tsx               # Application entry point
+├── .gitignore                 # Git ignore patterns
+├── eslint.config.js           # ESLint configuration
+├── index.html                 # HTML entry point
+├── package.json               # Project dependencies and scripts
+├── package-lock.json          # Dependency lock file
+├── README.md                  # Project documentation
+├── tsconfig.json              # TypeScript root configuration
+├── tsconfig.app.json          # TypeScript app configuration
+├── tsconfig.node.json         # TypeScript Node configuration
+└── vite.config.ts             # Vite build tool configuration
+```
+
+## Important Files and Directories
+
+### Configuration Files
+
+- **`vite.config.ts`**: Vite configuration with React SWC and Tailwind CSS plugins
+- **`tsconfig.json`**: TypeScript project references configuration
+- **`tsconfig.app.json`**: TypeScript configuration for application code
+- **`tsconfig.node.json`**: TypeScript configuration for Node.js tooling
+- **`eslint.config.js`**: ESLint configuration with React, TypeScript, and React Hooks rules
+- **`package.json`**: Project metadata, dependencies, and npm scripts
+
+### Source Code (`src/`)
+
+#### Entry Points
+
+- **`src/main.tsx`**: Application entry point that renders the React app
+- **`src/App.tsx`**: Root React component
+- **`index.html`**: HTML template served by Vite
+
+#### Styling
+
+- **`src/index.css`**:
+  - Global CSS styles
+  - Font face declarations for JetBrains Mono font family (16 variants)
+  - Root CSS variables and theme definitions
+
+#### Components (`src/components/`)
+
+The project follows **Atomic Design** principles:
+
+1. **`src/components/pages/`**: Page-level components (top-level route components)
+
+   - Each page component follows a standard structure:
+     - **`ComponentName.tsx`**: Component implementation
+     - **`index.ts`**: Barrel export (exports component and types)
+     - **`types.ts`**: TypeScript type definitions for component props
+   - Examples: `About/`, `Contact/`, `Home/`, `Projects/`, `Lab/`
+   - All pages are exported through `src/components/pages/index.ts`
+
+2. **`src/components/ui/`**: Reusable UI component library
+   - **`atoms/`**: Smallest, indivisible components (buttons, inputs, labels)
+     - Contains `index.ts` barrel export for all atom components
+   - **`molecules/`**: Simple combinations of atoms (form fields, search bars)
+     - Contains `index.ts` barrel export for all molecule components
+   - **`organisms/`**: Complex UI sections (headers, forms, navigation)
+     - Each organism component follows the same three-file structure as page components
+     - Examples: `VerticalNavBar/` (vertical navigation bar component)
+     - Contains `index.ts` barrel export for all organism components
+   - **`index.ts`**: Main UI barrel export that re-exports all components from atoms, molecules, and organisms
+     - Allows importing UI components directly: `import { VerticalNavBar } from './components/ui'`
+
+Each component directory contains an `index.ts` barrel export file for clean imports.
+
+#### Assets
+
+- **`src/assets/`**: Static assets like images, icons, and other media files
+- **`public/fonts/`**: Font files (JetBrains Mono family) served from root path
+
+### Static Assets (`public/`)
+
+- **`public/fonts/`**: Contains 16 JetBrains Mono font variants:
+  - Thin (100), ExtraLight (200), Light (300), Regular (400)
+  - Medium (500), SemiBold (600), Bold (700), ExtraBold (800)
+  - Each weight includes normal and italic variants
+  - Referenced in `src/index.css` with `/fonts/` paths
+
+### Cursor Configuration (`.cursor/`)
+
+- **`.cursor/rules/`**: Contains Cursor IDE rules in `.mdc` format
+  - Rules follow kebab-case naming convention
+  - Each rule file documents project conventions and guidelines
+
+## Technology Stack
+
+- **Framework**: React 19.1.1 with TypeScript
+- **Build Tool**: Vite 7.1.7
+- **Styling**: Tailwind CSS 4.1.17
+- **Font**: JetBrains Mono (16 variants)
+- **Linting**: ESLint with TypeScript and React plugins
+- **Language**: TypeScript 5.9.3
+
+## Key Conventions
+
+1. **Component Organization**: Atomic Design pattern (atoms → molecules → organisms → pages)
+2. **Page Component Structure**: Each page component follows a standard three-file structure:
+   - `ComponentName.tsx`: Component implementation
+   - `index.ts`: Barrel export (exports component and types: `export { Component } from './Component'; export type { ComponentProps } from './types';`)
+   - `types.ts`: TypeScript type definitions (exports `ComponentProps` type using `export type ComponentProps = {}`)
+3. **Barrel Exports**: Each component directory uses `index.ts` for clean imports
+   - **UI Components**: `src/components/ui/index.ts` exports all components from atoms, molecules, and organisms using `export *` pattern
+   - **Page Components**: `src/components/pages/index.ts` exports all page components
+   - **Individual Components**: Each component directory has its own `index.ts` that exports the component and its types
+4. **Font Loading**: Fonts are declared in `src/index.css` and served from `public/fonts/`
+5. **TypeScript**: Strict TypeScript configuration with separate configs for app and Node.js code
+6. **Path Aliases**: Fonts in `public/` are referenced with root-relative paths (`/fonts/...`)
+
+## Development Scripts
+
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run lint`: Run ESLint
+- `npm run preview`: Preview production build
