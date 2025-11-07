@@ -1,2 +1,4 @@
-export type ContactProps = {};
+export type ContactProps = {
+  id?: string;
+};
 

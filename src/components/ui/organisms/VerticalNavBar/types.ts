@@ -1,2 +1,3 @@
-export type VerticalNavBarProps = {};
-
+export type VerticalNavBarProps = {
+  onNavItemClick: (navItem: string) => void;
+};

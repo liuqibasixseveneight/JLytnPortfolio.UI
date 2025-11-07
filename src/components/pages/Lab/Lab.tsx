@@ -1,9 +1,12 @@
 import type { LabProps } from './types';
 
-export const Lab = ({}: LabProps) => {
+export const Lab = ({ id }: LabProps) => {
   return (
-    <div className='col-span-12 w-full h-screen flex items-center justify-center bg-cyan-500'>
+    <section
+      id={id}
+      className='col-span-12 w-full h-screen flex items-center justify-center bg-cyan-500'
+    >
       <h1 className='text-4xl font-bold text-zinc-100'>Lab</h1>
-    </div>
+    </section>
   );
 };

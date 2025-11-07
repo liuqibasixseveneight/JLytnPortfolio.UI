@@ -1,2 +1,4 @@
-export type HomeProps = {};
+export type HomeProps = {
+  id?: string;
+};
 

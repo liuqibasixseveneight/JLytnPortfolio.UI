@@ -1,3 +1,5 @@
-export type LabProps = {};
+export type LabProps = {
+  id?: string;
+};
 
 

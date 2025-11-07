@@ -1,2 +1,4 @@
-export type ProjectsProps = {};
+export type ProjectsProps = {
+  id?: string;
+};
 

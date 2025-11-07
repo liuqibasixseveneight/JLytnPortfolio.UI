@@ -8,7 +8,7 @@ export const BurgerMenuButton = ({
   return (
     <IconButton
       onClick={onClick}
-      className={`fixed left-[calc(23*100%/24)] -translate-x-1/2 flex-col gap-1.5 ${className}`}
+      className={`flex-col gap-1.5 ${className}`}
       ariaLabel='Menu'
     >
       <span className='w-6 h-0.5 bg-zinc-100'></span>
