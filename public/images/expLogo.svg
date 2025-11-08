@@ -1,0 +1,17 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- J and L share a vertical stem -->
+  <rect x="90" y="50" width="10" height="110" fill="#ffffff"/>
+  
+  <!-- J dot above -->
+  <rect x="90" y="30" width="20" height="8" fill="#ffffff"/>
+  
+  <!-- J hook extends left from bottom -->
+  <rect x="50" y="152" width="50" height="8" fill="#ffffff"/>
+  <rect x="50" y="135" width="8" height="25" fill="#ffffff"/>
+  
+  <!-- L extends right from top -->
+  <rect x="100" y="50" width="50" height="8" fill="#ffffff"/>
+  
+  <!-- Diagonal lightning bolt cutting through -->
+  <polygon points="110,75 120,75 105,110 115,110 95,145 100,115 90,115" fill="#ffffff"/>
+</svg>

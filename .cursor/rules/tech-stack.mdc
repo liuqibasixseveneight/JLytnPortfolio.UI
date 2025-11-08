@@ -104,6 +104,16 @@ This document outlines the technology stack, dependency versions, and best pract
   - Prefer utility classes over custom CSS when possible
   - Use `@apply` sparingly (only for repeated patterns)
 
+### Local Font Pipeline
+
+- **Fonts**: Inter (variable + static), Stack Sans Headline (variable + static), JetBrains Mono (static weights)
+- **Location**: Served from `public/fonts/{Inter,StackSansHeadline,JetBrainsMono}`
+- **Registration**: Declared with `@font-face` in `src/index.css`
+- **Usage**:
+  - Headings default to Stack Sans Headline via global CSS
+  - Body copy/buttons default to Inter
+  - JetBrains Mono available through the `.font-jetbrains` utility class for accent elements like the logo
+
 ### @tailwindcss/vite 4.1.17
 
 - **Version**: `^4.1.17`

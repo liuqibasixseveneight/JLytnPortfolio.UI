@@ -1,4 +1,3 @@
-export type HomeProps = {
-  id?: string;
-};
+export type HomeProps = Record<string, never>;
+
 

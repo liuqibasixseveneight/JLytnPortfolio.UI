@@ -19,8 +19,10 @@ JLytnPortfolio.UI/
 │       └── project-structure.mdc  # This file
 ├── node_modules/              # Dependencies (gitignored)
 ├── public/                    # Static assets served from root
-│   └── fonts/                 # Font files
-│       └── JetBrainsMono-*.ttf  # JetBrains Mono font family (16 variants)
+│   └── fonts/                 # Local font families served to the app
+│       ├── Inter/             # Inter variable + static weights (Google Fonts)
+│       ├── StackSansHeadline/ # Stack Sans Headline variable + static weights
+│       └── JetBrainsMono/     # JetBrains Mono static weights
 ├── src/                       # Source code directory
 │   ├── assets/                # Static assets (images, icons, etc.)
 │   ├── components/            # React components
@@ -96,9 +98,9 @@ JLytnPortfolio.UI/
 #### Styling
 
 - **`src/index.css`**:
-  - Global CSS styles
-  - Font face declarations for JetBrains Mono font family (16 variants)
-  - Root CSS variables and theme definitions
+  - Global CSS styles and root theme tokens
+  - `@font-face` registrations for Inter, Stack Sans Headline, and JetBrains Mono
+  - Utility helper `.font-jetbrains` for opt-in monospace usage
 
 #### Components (`src/components/`)
 
@@ -134,11 +136,10 @@ Each component directory contains an `index.ts` barrel export file for clean imp
 
 ### Static Assets (`public/`)
 
-- **`public/fonts/`**: Contains 16 JetBrains Mono font variants:
-  - Thin (100), ExtraLight (200), Light (300), Regular (400)
-  - Medium (500), SemiBold (600), Bold (700), ExtraBold (800)
-  - Each weight includes normal and italic variants
-  - Referenced in `src/index.css` with `/fonts/` paths
+- **`public/fonts/Inter/`**: Inter variable font files plus static weight fallbacks
+- **`public/fonts/StackSansHeadline/`**: Stack Sans Headline variable and static weight files
+- **`public/fonts/JetBrainsMono/`**: JetBrains Mono static weights for accent monospace usage
+- All fonts are referenced locally from `src/index.css` via `/fonts/...` paths
 
 ### Cursor Configuration (`.cursor/`)
 
@@ -150,8 +151,8 @@ Each component directory contains an `index.ts` barrel export file for clean imp
 
 - **Framework**: React 19.1.1 with TypeScript
 - **Build Tool**: Vite 7.1.7
-- **Styling**: Tailwind CSS 4.1.17
-- **Font**: JetBrains Mono (16 variants)
+- **Styling**: Tailwind CSS 4.1.17 + custom font-face declarations
+- **Fonts**: Inter (body), Stack Sans Headline (headings), JetBrains Mono (accent monospace)
 - **Linting**: ESLint with TypeScript and React plugins
 - **Language**: TypeScript 5.9.3
 
