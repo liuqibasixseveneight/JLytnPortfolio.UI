@@ -118,6 +118,7 @@ The project follows **Atomic Design** principles:
 2. **`src/components/ui/`**: Reusable UI component library
    - **`atoms/`**: Smallest, indivisible components (buttons, inputs, labels)
      - Contains `index.ts` barrel export for all atom components
+     - Example atoms: `IconButton/`, `SliderProgress/`, `Logo/`
    - **`molecules/`**: Simple combinations of atoms (form fields, search bars)
      - Contains `index.ts` barrel export for all molecule components
    - **`organisms/`**: Complex UI sections (headers, forms, navigation)

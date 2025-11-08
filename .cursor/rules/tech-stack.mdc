@@ -103,6 +103,7 @@ This document outlines the technology stack, dependency versions, and best pract
   - Use `@tailwindcss/vite` plugin (already configured)
   - Prefer utility classes over custom CSS when possible
   - Use `@apply` sparingly (only for repeated patterns)
+  - Avoid broad shorthands like `padding: 0` in global resets that can override Tailwind utilities; prefer the provided preflight or more targeted rules
 
 ### Local Font Pipeline
 
