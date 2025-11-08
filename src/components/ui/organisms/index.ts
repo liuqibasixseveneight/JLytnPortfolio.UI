@@ -1,4 +1,6 @@
-export { GridContainer } from './GridContainer';
-export type { GridContainerProps } from './GridContainer';
-export { VerticalNavBar } from './VerticalNavBar';
-export type { VerticalNavBarProps } from './VerticalNavBar';
+export { HeaderNav } from './HeaderNav';
+export type { HeaderNavProps } from './HeaderNav';
+export { VerticalScrollBar } from './VerticalScrollBar';
+export type { VerticalScrollBarProps } from './VerticalScrollBar';
+export { HeroSlider } from './HeroSlider';
+export type { HeroSliderProps } from './HeroSlider';

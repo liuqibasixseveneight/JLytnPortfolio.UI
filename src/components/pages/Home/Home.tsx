@@ -1,9 +1,25 @@
 import type { HomeProps } from './types';
+import { HeaderNav, HeroSlider, VerticalScrollBar } from '../../ui';
 
 export const Home = ({}: HomeProps) => {
   return (
-    <div className='col-span-12 w-full h-screen flex items-center justify-center bg-purple-500'>
-      <h1 className='text-4xl font-bold text-white'>j-lytn</h1>
-    </div>
+    <>
+      <HeaderNav />
+      <VerticalScrollBar />
+
+      <section className='intro'>
+        <h1>
+          Frontend engineer building fast, accessible interfaces with polish.
+        </h1>
+      </section>
+
+      <HeroSlider />
+
+      <section className='outro'>
+        <h1>
+          Thanks for stopping by—let’s chat about your next frontend build.
+        </h1>
+      </section>
+    </>
   );
 };

@@ -1,2 +1,3 @@
-export type HomeProps = {};
+export type HomeProps = Record<string, never>;
+
 
