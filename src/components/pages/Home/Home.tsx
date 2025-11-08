@@ -9,15 +9,16 @@ export const Home = ({}: HomeProps) => {
 
       <section className='intro'>
         <h1>
-          I craft human-centric frontends with performance, animation, and
-          accessibility in mind.
+          Frontend engineer building fast, accessible interfaces with polish.
         </h1>
       </section>
 
       <HeroSlider />
 
       <section className='outro'>
-        <h1>Thanks for gliding through. Let’s build something together.</h1>
+        <h1>
+          Thanks for stopping by—let’s chat about your next frontend build.
+        </h1>
       </section>
     </>
   );

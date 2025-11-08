@@ -19,7 +19,7 @@ import {
 } from './animations';
 import { scheduleScrollTriggerRefresh } from './utils';
 import type { HeroSliderProps } from './types';
-import { slides as defaultSlides, type Slide } from '../../../../slides';
+import { slides as defaultSlides, type Slide } from './slides';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
