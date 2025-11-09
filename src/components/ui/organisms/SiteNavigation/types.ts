@@ -1,11 +1,21 @@
 import type { Ref } from 'react';
 
-export type MenuLink = {
+export type NavigationLink = {
   label: string;
   href: string;
 };
 
-export type HomeMenuProps = {
+export type NavigationFooterSection = {
+  id: string;
+  lines: string[];
+};
+
+export type NavigationMedia = {
+  src: string;
+  alt: string;
+};
+
+export type SiteNavigationProps = {
   onToggle: () => void;
   isAnimating: boolean;
   isMenuOpen: boolean;
@@ -15,14 +25,10 @@ export type HomeMenuProps = {
   menuOverlayRef: Ref<HTMLDivElement>;
   menuOverlayContentRef: Ref<HTMLDivElement>;
   menuMediaWrapperRef: Ref<HTMLDivElement>;
-  location: string;
-  links: MenuLink[];
-  contactLines: string[];
-  mediaImage: {
-    src: string;
-    alt: string;
-  };
-  controlId?: string;
+  primaryLinks?: NavigationLink[];
+  footerSections?: NavigationFooterSection[];
+  mediaImage?: NavigationMedia;
   logoHref?: string;
+  controlId?: string;
 };
 

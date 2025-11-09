@@ -1,9 +1,8 @@
-export { HeroSlider } from './HeroSlider';
-export type { HeroSliderProps } from './HeroSlider';
 export { SiteNavigation } from './SiteNavigation';
 export type {
   SiteNavigationProps,
   NavigationLink,
   NavigationFooterSection,
   NavigationMedia,
-} from './SiteNavigation';
+} from './types';
+
