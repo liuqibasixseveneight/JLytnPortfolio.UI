@@ -109,7 +109,7 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
           start: 'top top',
           end: () => `+=${window.innerHeight * totalSlides}`,
           scrub: 1,
-          pin: 'body',
+          pin: sliderWrapperRef.current,
           pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
