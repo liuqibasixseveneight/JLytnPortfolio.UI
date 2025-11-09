@@ -357,7 +357,7 @@ nav p {
   color: #f4f4f5;
 }
 
-section {
+.slider {
   position: relative;
   width: 100vw;
   min-height: 100vh;

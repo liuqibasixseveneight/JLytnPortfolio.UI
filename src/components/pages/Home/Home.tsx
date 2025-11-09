@@ -55,36 +55,6 @@ export const Home = ({}: HomeProps) => {
 
     lenis.on('scroll', handleScroll);
 
-    const scrollerElement = document.documentElement;
-
-    ScrollTrigger.scrollerProxy(scrollerElement, {
-      scrollTop(value) {
-        if (typeof value === 'number') {
-          lenis.scrollTo(value, { immediate: true });
-        }
-
-        return lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-      fixedMarkers: true,
-    });
-
-    ScrollTrigger.defaults({ scroller: scrollerElement });
-
-    const resizeLenis = () => {
-      lenis.resize();
-    };
-
-    ScrollTrigger.addEventListener('refresh', resizeLenis);
-    window.addEventListener('resize', resizeLenis);
-
     lenisRef.current = lenis;
 
     const updateLenis = (time: number) => {
@@ -100,13 +70,6 @@ export const Home = ({}: HomeProps) => {
       lenis.off('scroll', handleScroll);
       lenis.destroy();
       lenisRef.current = null;
-      ScrollTrigger.removeEventListener('refresh', resizeLenis);
-      window.removeEventListener('resize', resizeLenis);
-      ScrollTrigger.scrollerProxy(
-        scrollerElement,
-        null as unknown as Record<string, unknown>
-      );
-      ScrollTrigger.defaults({ scroller: undefined });
     };
   }, []);
 

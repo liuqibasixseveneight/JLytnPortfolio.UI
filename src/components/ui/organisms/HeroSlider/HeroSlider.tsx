@@ -32,7 +32,6 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
   const totalSlides = slidesData.length;
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
 
   const sliderSectionRef = useRef<HTMLElement | null>(null);
   const sliderImagesRef = useRef<HTMLDivElement | null>(null);
@@ -61,48 +60,6 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
       cleanupResize();
     };
   }, [totalSlides]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const { visualViewport } = window;
-    let frameId: number | null = null;
-
-    const applyHeight = () => {
-      const height = visualViewport?.height ?? window.innerHeight;
-      setViewportHeight(height);
-    };
-
-    const scheduleHeightUpdate = () => {
-      if (frameId != null) {
-        window.cancelAnimationFrame(frameId);
-      }
-
-      frameId = window.requestAnimationFrame(() => {
-        applyHeight();
-        frameId = null;
-      });
-    };
-
-    scheduleHeightUpdate();
-
-    window.addEventListener('resize', scheduleHeightUpdate);
-    window.addEventListener('orientationchange', scheduleHeightUpdate);
-    visualViewport?.addEventListener('resize', scheduleHeightUpdate);
-    visualViewport?.addEventListener('scroll', scheduleHeightUpdate);
-
-    return () => {
-      if (frameId != null) {
-        window.cancelAnimationFrame(frameId);
-      }
-      window.removeEventListener('resize', scheduleHeightUpdate);
-      window.removeEventListener('orientationchange', scheduleHeightUpdate);
-      visualViewport?.removeEventListener('resize', scheduleHeightUpdate);
-      visualViewport?.removeEventListener('scroll', scheduleHeightUpdate);
-    };
-  }, []);
 
   useGSAP(
     (_, contextSafe) => {
@@ -149,6 +106,8 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
           scrub: 1,
           pin: true,
           pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (progressBarRef.current) {
               gsap.set(progressBarRef.current, {
@@ -192,18 +151,7 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
   }
 
   return (
-    <section
-      className='slider'
-      ref={sliderSectionRef}
-      style={
-        viewportHeight != null
-          ? {
-              minHeight: `${viewportHeight}px`,
-              height: `${viewportHeight}px`,
-            }
-          : undefined
-      }
-    >
+    <section className='slider' ref={sliderSectionRef}>
       <SliderImages
         ref={sliderImagesRef}
         slides={visibleSlides}
