@@ -34,5 +34,3 @@ export const scheduleScrollTriggerRefresh = () => {
     visualViewport?.removeEventListener('scroll', scheduleRefresh);
   };
 };
-
-
