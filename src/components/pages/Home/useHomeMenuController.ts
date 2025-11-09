@@ -114,7 +114,7 @@ export const useHomeMenuController = () => {
 
       splitTextGroupsRef.current = splitGroups;
 
-      gsap.set(rootElement, { '--menu-content-offset': '0svh' });
+      gsap.set(rootElement, { '--menu-content-offset': '0px' });
       gsap.set(menuOverlayContent, { yPercent: -50 });
       gsap.set(menuMediaWrapper, { opacity: 0 });
       gsap.set(menuColumns, { opacity: 0.25 });
@@ -133,7 +133,7 @@ export const useHomeMenuController = () => {
         .to(
           rootElement,
           {
-            '--menu-content-offset': '100svh',
+            '--menu-content-offset': 'calc(var(--vh, 1vh) * 100)',
             duration: MENU_SHIFT_DURATION,
           },
           '<'
@@ -216,7 +216,7 @@ export const useHomeMenuController = () => {
 
         gsap.set(menuColumns, { opacity: 0.25 });
         gsap.set(menuMediaWrapper, { opacity: 0 });
-        gsap.set(rootElement, { '--menu-content-offset': '0svh' });
+        gsap.set(rootElement, { '--menu-content-offset': '0px' });
         menuOverlay.style.pointerEvents = 'none';
         menuOverlayContent.style.pointerEvents = 'none';
 
@@ -263,7 +263,7 @@ export const useHomeMenuController = () => {
           '<'
         )
         .to(rootElement, {
-          '--menu-content-offset': '0svh',
+          '--menu-content-offset': '0px',
           duration: MENU_CLOSE_DURATION,
         })
         .to(
