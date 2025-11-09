@@ -1,4 +1,5 @@
 import { HeroSlider, HomeMenu } from '../../ui';
+import { useViewportHeight } from '../../../hooks/useViewportHeight';
 import { useHomeMenuController } from './useHomeMenuController';
 
 const MENU_LINKS = [
@@ -20,6 +21,8 @@ const MENU_MEDIA = {
 };
 
 export const Home = () => {
+  useViewportHeight();
+
   const {
     rootRef,
     mainContentRef,
