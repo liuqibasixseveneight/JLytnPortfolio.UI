@@ -361,7 +361,8 @@ section {
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
+  height: 100dvh;
   overflow: hidden;
 
   display: flex;
