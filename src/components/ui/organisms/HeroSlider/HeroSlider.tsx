@@ -33,7 +33,8 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const sliderSectionRef = useRef<HTMLElement | null>(null);
+  const sliderWrapperRef = useRef<HTMLElement | null>(null);
+  const sliderSectionRef = useRef<HTMLDivElement | null>(null);
   const sliderImagesRef = useRef<HTMLDivElement | null>(null);
   const sliderTitleRef = useRef<HTMLHeadingElement | null>(null);
   const sliderIndicatorsRef = useRef<HTMLDivElement | null>(null);
@@ -63,7 +64,11 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
 
   useGSAP(
     (_, contextSafe) => {
-      if (!sliderSectionRef.current || !totalSlides) {
+      if (
+        !sliderWrapperRef.current ||
+        !sliderSectionRef.current ||
+        !totalSlides
+      ) {
         return;
       }
 
@@ -100,11 +105,11 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
       if (!scrollTriggerRef.current) {
         scrollTriggerRef.current = ScrollTrigger.create({
           id: 'hero-slider-trigger',
-          trigger: sliderSectionRef.current,
+          trigger: sliderWrapperRef.current,
           start: 'top top',
           end: () => `+=${window.innerHeight * totalSlides}`,
           scrub: 1,
-          pin: true,
+          pin: sliderSectionRef.current,
           pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -151,21 +156,23 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
   }
 
   return (
-    <section className='slider' ref={sliderSectionRef}>
-      <SliderImages
-        ref={sliderImagesRef}
-        slides={visibleSlides}
-        activeSlideId={slidesData[activeIndex]?.id}
-      />
+    <section className='slider-wrapper' ref={sliderWrapperRef}>
+      <div className='slider' ref={sliderSectionRef}>
+        <SliderImages
+          ref={sliderImagesRef}
+          slides={visibleSlides}
+          activeSlideId={slidesData[activeIndex]?.id}
+        />
 
-      <SliderTitle
-        ref={sliderTitleRef}
-        title={slidesData[activeIndex]?.title ?? ''}
-      />
+        <SliderTitle
+          ref={sliderTitleRef}
+          title={slidesData[activeIndex]?.title ?? ''}
+        />
 
-      <div className='slider-indicator'>
-        <SliderIndicators ref={sliderIndicatorsRef} slides={slidesData} />
-        <SliderProgressBar ref={progressBarRef} />
+        <div className='slider-indicator'>
+          <SliderIndicators ref={sliderIndicatorsRef} slides={slidesData} />
+          <SliderProgressBar ref={progressBarRef} />
+        </div>
       </div>
     </section>
   );
