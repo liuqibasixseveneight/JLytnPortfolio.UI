@@ -69,12 +69,11 @@ html {
 }
 
 :root {
-  --menu-content-offset: 0svh;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  --menu-content-offset: 0svh;
   --bf: #171717;
   --fg: #fff;
   --menu-bg: #0f0f0f;
@@ -338,10 +337,6 @@ nav {
   .menu-link a {
     font-size: 3rem;
   }
-
-  /* .menu-tag a {
-    font-size: 1.25rem;
-  } */
 }
 
 /* Section - Hero Slider */
@@ -365,7 +360,8 @@ nav p {
 section {
   position: relative;
   width: 100vw;
-  height: 100svh;
+  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
 
   display: flex;
