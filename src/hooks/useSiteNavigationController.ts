@@ -29,7 +29,7 @@ type SplitTextConstructor = new (
 
 const SplitTextCtor = SplitText as unknown as SplitTextConstructor;
 
-export const useHomeMenuController = () => {
+export const useSiteNavigationController = () => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const mainContentRef = useRef<HTMLDivElement | null>(null);
   const menuToggleLabelRef = useRef<HTMLParagraphElement | null>(null);

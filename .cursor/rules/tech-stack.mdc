@@ -67,6 +67,7 @@ This document outlines the technology stack, dependency versions, and best pract
   - **Build Output**: Use `vite build` for production - outputs optimized bundles
   - **Preview**: Use `vite preview` to test production builds locally
   - **Path Aliases**: Configure path aliases in `vite.config.ts` if needed (e.g., `@/components`)
+  - **Node Version**: Requires Node `^20.19.0` or `>=22.12.0`—align local environments accordingly
 
 ### @vitejs/plugin-react-swc 4.2.1
 
@@ -124,6 +125,18 @@ This document outlines the technology stack, dependency versions, and best pract
   - No separate PostCSS configuration needed
   - Works seamlessly with Vite's HMR
 
+## Smooth Scrolling
+
+### Lenis 1.3.14
+
+- **Version**: `^1.3.14` (package.json) → **1.3.14** (installed)
+- **Purpose**: Provides buttery-smooth, hardware-accelerated scrolling with consistent easing
+- **Best Practices**:
+  - Instantiate Lenis once (e.g., inside a layout component) and drive it via `requestAnimationFrame`
+  - Clean up subscriptions on unmount to prevent duplicate RAF loops
+  - Sync Lenis with GSAP ScrollTrigger if both are used—ScrollTrigger offers a `scrollerProxy` helper
+  - Expose a context or hook for components that need to trigger scroll-to behavior, rather than importing the Lenis instance directly
+
 ## Animation
 
 ### GSAP 3.13.0
@@ -167,6 +180,19 @@ This document outlines the technology stack, dependency versions, and best pract
   - **Performance**: `useGSAP` optimizes animation setup and teardown for React
   - **Refs**: Use refs with `useGSAP` for targeting DOM elements
   - **Conditional Animations**: Handle conditional animations properly with dependency arrays
+
+## State Management
+
+### Zustand 5.0.8
+
+- **Version**: `^5.0.8` (package.json) → **5.0.8** (installed)
+- **Purpose**: Minimal, flux-like state container used for global UI state (e.g., navigation)
+- **Best Practices**:
+  - Define stores in dedicated modules (e.g., `src/hooks/useSiteNavigationController.ts`) and export typed selectors
+  - Prefer the `useShallow` helper for multi-field selections to prevent unnecessary re-renders
+  - Keep store shape flat; derive computed values inside selectors rather than storing redundant data
+  - Always type the store with `StateCreator` so actions and state remain fully typed
+  - Clean up listeners when wiring Zustand to imperative APIs (such as Lenis or GSAP timelines)
 
 ## TypeScript
 

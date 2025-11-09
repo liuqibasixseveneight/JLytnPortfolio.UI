@@ -1,10 +1,37 @@
 import { Logo } from '../../atoms';
 import { MenuToggle } from '../../molecules';
-import type { HomeMenuProps } from './types';
+import type { SiteNavigationProps } from './types';
 
 const DEFAULT_CONTROL_ID = 'menu-overlay';
 
-export const HomeMenu = ({
+const DEFAULT_NAV_LINKS = [
+  { label: 'Home', href: '#' },
+  { label: 'About', href: '#' },
+  { label: 'Projects', href: '#' },
+  { label: 'Contact', href: '#' },
+];
+
+const DEFAULT_FOOTER_SECTIONS = [
+  {
+    id: 'location',
+    lines: ['Leeds, UK'],
+  },
+  {
+    id: 'contact',
+    lines: [
+      '© 2025 J-Lytn.',
+      'All rights reserved.',
+      'joshua.riz.layton@gmail.com',
+    ],
+  },
+];
+
+const DEFAULT_MEDIA = {
+  src: 'https://images.unsplash.com/photo-1716066508192-7ccd1a71ac1c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740',
+  alt: 'Menu spiral image',
+};
+
+export const SiteNavigation = ({
   onToggle,
   isAnimating,
   isMenuOpen,
@@ -14,13 +41,12 @@ export const HomeMenu = ({
   menuOverlayRef,
   menuOverlayContentRef,
   menuMediaWrapperRef,
-  location,
-  links,
-  contactLines,
+  primaryLinks,
+  footerSections,
   mediaImage,
   controlId = DEFAULT_CONTROL_ID,
   logoHref = '#',
-}: HomeMenuProps) => {
+}: SiteNavigationProps) => {
   const isOverlayActive = isMenuOpen || isOpening;
 
   return (
@@ -53,12 +79,15 @@ export const HomeMenu = ({
       >
         <div className='menu-overlay-content' ref={menuOverlayContentRef}>
           <div className='menu-media-wrapper' ref={menuMediaWrapperRef}>
-            <img src={mediaImage.src} alt={mediaImage.alt} />
+            <img
+              src={(mediaImage ?? DEFAULT_MEDIA).src}
+              alt={(mediaImage ?? DEFAULT_MEDIA).alt}
+            />
           </div>
           <div className='menu-content-wrapper'>
             <div className='menu-content-main'>
               <div className='menu-col'>
-                {links.map(({ href, label }) => (
+                {(primaryLinks ?? DEFAULT_NAV_LINKS).map(({ href, label }) => (
                   <div className='menu-link' key={label}>
                     <a href={href}>{label}</a>
                   </div>
@@ -66,14 +95,13 @@ export const HomeMenu = ({
               </div>
             </div>
             <div className='menu-footer'>
-              <div className='menu-col'>
-                <p>{location}</p>
-              </div>
-              <div className='menu-col'>
-                {contactLines.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
-              </div>
+              {(footerSections ?? DEFAULT_FOOTER_SECTIONS).map((section) => (
+                <div className='menu-col' key={section.id}>
+                  {section.lines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>

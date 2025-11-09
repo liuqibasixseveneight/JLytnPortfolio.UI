@@ -70,7 +70,17 @@ function badExample() {
 }
 ````
 
+6. When you update an existing rule, refresh the frontmatter so `description`, `globs`, and `alwaysApply` still match the body of the rule.
+7. Pair rule edits with the code changes that motivated them so the documentation never drifts from the implementation.
+
 ## Keeping rules current
 
 - When project conventions shift (e.g., Tailwind utility usage, component organization), update existing rule files in the same PR as the code change.
 - Summaries in rule files should reflect the latest implementation so Cursor guidance stays trustworthy.
+
+## Editing checklist
+
+- Confirm the change is project-wide (otherwise scope the `globs` to the affected directories).
+- Note breaking or deprecated guidance in a bolded callout so it is easy to spot in Cursor’s sidebar.
+- Use concise language—rules should act as reminders, not full tutorials.
+- Re-run a quick search over the repo after editing to ensure references still line up with the live directory layout and dependency versions.

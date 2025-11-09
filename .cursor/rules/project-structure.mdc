@@ -12,68 +12,62 @@ This document outlines the directory structure and important files in the JLytnP
 
 ```
 JLytnPortfolio.UI/
-├── .cursor/                    # Cursor IDE configuration
-│   ├── README.md              # Cursor documentation
-│   └── rules/                 # Cursor rules directory
-│       ├── cursor-rules.mdc   # Rule for managing cursor rules
-│       └── project-structure.mdc  # This file
-├── node_modules/              # Dependencies (gitignored)
-├── public/                    # Static assets served from root
-│   └── fonts/                 # Local font families served to the app
-│       ├── Inter/             # Inter variable + static weights (Google Fonts)
-│       ├── StackSansHeadline/ # Stack Sans Headline variable + static weights
-│       └── JetBrainsMono/     # JetBrains Mono static weights
-├── src/                       # Source code directory
-│   ├── assets/                # Static assets (images, icons, etc.)
-│   ├── components/            # React components
-│   │   ├── pages/             # Page-level components
-│   │   │   ├── About/         # About page component
-│   │   │   │   ├── About.tsx  # Component implementation
-│   │   │   │   ├── index.ts   # Component barrel export
-│   │   │   │   └── types.ts   # TypeScript type definitions
-│   │   │   ├── Contact/       # Contact page component
-│   │   │   │   ├── Contact.tsx
-│   │   │   │   ├── index.ts
-│   │   │   │   └── types.ts
-│   │   │   ├── Home/          # Home page component
+├── .cursor/
+│   ├── README.md
+│   └── rules/
+│       ├── cursor-rules.mdc
+│       ├── project-structure.mdc
+│       └── tech-stack.mdc
+├── public/
+│   ├── fonts/
+│   │   ├── Inter/
+│   │   ├── JetBrainsMono/
+│   │   └── StackSansHeadline/
+│   └── images/
+│       └── expLogo.svg
+├── src/
+│   ├── App.tsx
+│   ├── assets/
+│   ├── components/
+│   │   ├── pages/
+│   │   │   ├── Home/
 │   │   │   │   ├── Home.tsx
 │   │   │   │   ├── index.ts
 │   │   │   │   └── types.ts
-│   │   │   ├── Projects/      # Projects page component
-│   │   │   │   ├── Projects.tsx
-│   │   │   │   ├── index.ts
-│   │   │   │   └── types.ts
-│   │   │   ├── Lab/           # Lab page component
-│   │   │   │   ├── Lab.tsx
-│   │   │   │   ├── index.ts
-│   │   │   │   └── types.ts
-│   │   │   └── index.ts       # Page components barrel export
-│   │   └── ui/                # UI component library (Atomic Design)
-│   │       ├── atoms/         # Atomic components (smallest units)
-│   │       │   └── index.ts   # Atoms barrel export
-│   │       ├── molecules/     # Molecular components (composed atoms)
-│   │       │   └── index.ts   # Molecules barrel export
-│   │       ├── organisms/     # Organism components (composed molecules)
-│   │       │   ├── VerticalNavBar/  # Vertical navigation bar component
-│   │       │   │   ├── VerticalNavBar.tsx
-│   │       │   │   ├── index.ts
-│   │       │   │   └── types.ts
-│   │       │   └── index.ts   # Organisms barrel export
-│   │       └── index.ts       # UI components barrel export
-│   ├── App.tsx                # Root React component
-│   ├── config.ts              # Application configuration
-│   ├── index.css              # Global styles and font declarations
-│   └── main.tsx               # Application entry point
-├── .gitignore                 # Git ignore patterns
-├── eslint.config.js           # ESLint configuration
-├── index.html                 # HTML entry point
-├── package.json               # Project dependencies and scripts
-├── package-lock.json          # Dependency lock file
-├── README.md                  # Project documentation
-├── tsconfig.json              # TypeScript root configuration
-├── tsconfig.app.json          # TypeScript app configuration
-├── tsconfig.node.json         # TypeScript Node configuration
-└── vite.config.ts             # Vite build tool configuration
+│   │   │   └── index.ts
+│   │   └── ui/
+│   │       ├── atoms/
+│   │       │   ├── HamburgerIcon/
+│   │       │   ├── IconButton/
+│   │       │   ├── Logo/
+│   │       │   ├── SliderIndicatorItem/
+│   │       │   └── SliderProgress/
+│   │       ├── molecules/
+│   │       │   ├── MenuToggle/
+│   │       │   ├── SliderImages/
+│   │       │   ├── SliderIndicators/
+│   │       │   ├── SliderProgressBar/
+│   │       │   └── SliderTitle/
+│   │       └── organisms/
+│   │           ├── HeroSlider/
+│   │           └── SiteNavigation/
+│   ├── config.ts
+│   ├── hooks/
+│   │   ├── index.ts
+│   │   ├── useSiteNavigationController.ts
+│   │   └── useViewportHeight.ts
+│   ├── index.css
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
 ## Important Files and Directories
@@ -112,28 +106,30 @@ The project follows **Atomic Design** principles:
      - **`ComponentName.tsx`**: Component implementation
      - **`index.ts`**: Barrel export (exports component and types)
      - **`types.ts`**: TypeScript type definitions for component props
-   - Examples: `About/`, `Contact/`, `Home/`, `Projects/`, `Lab/`
+   - Currently only `Home/` is implemented; new routes should mirror this layout.
    - All pages are exported through `src/components/pages/index.ts`
 
 2. **`src/components/ui/`**: Reusable UI component library
    - **`atoms/`**: Smallest, indivisible components (buttons, inputs, labels)
      - Contains `index.ts` barrel export for all atom components
-     - Example atoms: `IconButton/`, `SliderProgress/`, `Logo/`
+     - Current atoms: `HamburgerIcon/`, `IconButton/`, `Logo/`, `SliderIndicatorItem/`, `SliderProgress/`
    - **`molecules/`**: Simple combinations of atoms (form fields, search bars)
      - Contains `index.ts` barrel export for all molecule components
+     - Current molecules: `MenuToggle/`, `SliderImages/`, `SliderIndicators/`, `SliderProgressBar/`, `SliderTitle/`
    - **`organisms/`**: Complex UI sections (headers, forms, navigation)
      - Each organism component follows the same three-file structure as page components
-     - Examples: `VerticalNavBar/` (vertical navigation bar component)
+     - Current organisms: `HeroSlider/` (animated hero experience), `SiteNavigation/` (overlay menu)
      - Contains `index.ts` barrel export for all organism components
    - **`index.ts`**: Main UI barrel export that re-exports all components from atoms, molecules, and organisms
-     - Allows importing UI components directly: `import { VerticalNavBar } from './components/ui'`
+     - Allows importing UI components directly: `import { HeroSlider } from './components/ui'`
 
 Each component directory contains an `index.ts` barrel export file for clean imports.
 
 #### Assets
 
-- **`src/assets/`**: Static assets like images, icons, and other media files
-- **`public/fonts/`**: Font files (JetBrains Mono family) served from root path
+- **`src/assets/`**: Reserved for build-time assets (currently empty)
+- **`public/fonts/`**: Font files (Inter, Stack Sans Headline, JetBrains Mono) served from root path
+- **`public/images/`**: Brand imagery and exported SVG assets
 
 ### Static Assets (`public/`)
 
@@ -141,6 +137,7 @@ Each component directory contains an `index.ts` barrel export file for clean imp
 - **`public/fonts/StackSansHeadline/`**: Stack Sans Headline variable and static weight files
 - **`public/fonts/JetBrainsMono/`**: JetBrains Mono static weights for accent monospace usage
 - All fonts are referenced locally from `src/index.css` via `/fonts/...` paths
+- **`public/images/`**: Exposed as root-relative URLs (e.g. `/images/expLogo.svg`) for Hero slider and navigation artwork
 
 ### Cursor Configuration (`.cursor/`)
 
@@ -150,31 +147,36 @@ Each component directory contains an `index.ts` barrel export file for clean imp
 
 ## Technology Stack
 
-- **Framework**: React 19.1.1 with TypeScript
-- **Build Tool**: Vite 7.1.7
+- **Framework**: React 19.2.0 with TypeScript
+- **Build Tool**: Vite 7.2.1
 - **Styling**: Tailwind CSS 4.1.17 + custom font-face declarations
+- **Animation**: GSAP 3.13.0 via `@gsap/react` helpers
+- **Smooth Scrolling**: Lenis 1.3.14 for momentum-based scroll experiences
+- **State Management**: Zustand 5.0.8 for lightweight shared state
 - **Fonts**: Inter (body), Stack Sans Headline (headings), JetBrains Mono (accent monospace)
-- **Linting**: ESLint with TypeScript and React plugins
+- **Linting**: ESLint 9.39 with TypeScript ESLint 8.46 and React Hooks rules
 - **Language**: TypeScript 5.9.3
 
 ## Key Conventions
 
-1. **Component Organization**: Atomic Design pattern (atoms → molecules → organisms → pages)
-2. **Page Component Structure**: Each page component follows a standard three-file structure:
-   - `ComponentName.tsx`: Component implementation
-   - `index.ts`: Barrel export (exports component and types: `export { Component } from './Component'; export type { ComponentProps } from './types';`)
-   - `types.ts`: TypeScript type definitions (exports `ComponentProps` type using `export type ComponentProps = {}`)
-3. **Barrel Exports**: Each component directory uses `index.ts` for clean imports
-   - **UI Components**: `src/components/ui/index.ts` exports all components from atoms, molecules, and organisms using `export *` pattern
-   - **Page Components**: `src/components/pages/index.ts` exports all page components
-   - **Individual Components**: Each component directory has its own `index.ts` that exports the component and its types
-4. **Font Loading**: Fonts are declared in `src/index.css` and served from `public/fonts/`
-5. **TypeScript**: Strict TypeScript configuration with separate configs for app and Node.js code
-6. **Path Aliases**: Fonts in `public/` are referenced with root-relative paths (`/fonts/...`)
+1. **Component Organization**: Atomic Design (atoms → molecules → organisms → pages) remains the baseline; even though only `Home/` is live today, new pages must follow the same three-file structure (`ComponentName.tsx`, `index.ts`, `types.ts`).
+2. **Barrel Exports**: Every directory exposes an `index.ts` that re-exports the primary component and its props. Pages aggregate through `src/components/pages/index.ts`; UI primitives aggregate through `src/components/ui/index.ts`.
+3. **Utility Hooks**: Shared hooks live in `src/hooks/` with their own barrel; prefer colocating hook-specific utilities here instead of inside components.
+4. **Font Loading**: Fonts are registered in `src/index.css` and resolved from `/fonts/...` so they can be referenced with root-relative URLs.
+5. **Assets**: Use `public/` for files that need a fixed URL (fonts, logos) and `src/assets/` for build-time imports (currently empty but reserved for future imagery or icons).
+6. **TypeScript**: Strict mode is enabled across the app configuration—avoid disabling checks in component-level files.
 
 ## Development Scripts
 
 - `npm run dev`: Start development server
+- `npm run dev:staging`: Start development server with staging environment flags
 - `npm run build`: Build for production
+- `npm run build:staging`: Production build using the staging mode flag
 - `npm run lint`: Run ESLint
 - `npm run preview`: Preview production build
+
+## Additional directories
+
+- **`src/hooks/`**: Contains reusable logic such as `useViewportHeight` (CSS custom property syncing) and `useSiteNavigationController` (global navigation state powered by Zustand).
+- **`public/images/`**: Houses static image assets, currently the exported logo used by UI atoms.
+- **`src/components/ui/organisms/HeroSlider/`**: Complex hero carousel composed of supporting molecules (titles, progress, indicators) and animations orchestrated via GSAP helpers in `animations.ts`.
