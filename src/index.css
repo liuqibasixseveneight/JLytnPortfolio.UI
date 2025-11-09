@@ -157,6 +157,12 @@ nav {
   z-index: 2;
 }
 
+.menu-logo,
+.menu-logo a {
+  display: inline-flex;
+  align-items: center;
+}
+
 .menu-toggle-btn {
   display: flex;
   align-items: center;
@@ -187,8 +193,12 @@ nav {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--hamburger-icon-border);
-  border-radius: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(24, 24, 27, 0.35);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .menu-hamburger-icon span {
@@ -487,6 +497,14 @@ section {
   }
 
   nav {
+    display: block;
+  }
+
+  .menu-bar {
+    padding: 1.25rem;
+  }
+
+  .menu-toggle-label {
     display: none;
   }
 

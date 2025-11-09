@@ -15,6 +15,9 @@ CustomEase.create('hop', '.87, 0, .13, 1');
 const MENU_SHIFT_DURATION = 0.65;
 const MENU_MEDIA_DURATION = 0.45;
 const MENU_COPY_DURATION = 1.1;
+const MENU_CLOSE_DURATION = 0.55;
+const MENU_CLOSE_MEDIA_DURATION = 0.35;
+const MENU_CLOSE_COPY_DURATION = 0.5;
 
 type SplitTextInstance = {
   lines?: HTMLElement[];
@@ -37,7 +40,8 @@ export const Home = ({}: HomeProps) => {
   const menuMediaWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const lenisRef = useRef<Lenis | null>(null);
-  const menuTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const menuOpenTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const menuCloseTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const splitTextGroupsRef = useRef<SplitTextInstance[][]>([]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -225,11 +229,93 @@ export const Home = ({}: HomeProps) => {
         ScrollTrigger.refresh();
       });
 
-      menuTimelineRef.current = timeline;
+      menuOpenTimelineRef.current = timeline;
+
+      const closeLines = splitGroups.flatMap((group) =>
+        group.flatMap((split) => split.lines ?? [])
+      );
+
+      const closeTimeline = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'hop' },
+      });
+
+      closeTimeline
+        .to(closeLines, {
+          yPercent: -110,
+          duration: MENU_CLOSE_COPY_DURATION,
+          ease: 'hop',
+        })
+        .to(
+          menuColumns,
+          {
+            opacity: 0.25,
+            duration: MENU_CLOSE_COPY_DURATION,
+          },
+          '<'
+        )
+        .to(
+          menuMediaWrapper,
+          {
+            opacity: 0,
+            duration: MENU_CLOSE_MEDIA_DURATION,
+            ease: 'power2.inOut',
+          },
+          '<'
+        )
+        .to(rootElement, {
+          '--menu-content-offset': '0svh',
+          duration: MENU_CLOSE_DURATION,
+        })
+        .to(
+          menuOverlay,
+          {
+            clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
+            duration: MENU_CLOSE_DURATION,
+          },
+          '<'
+        )
+        .to(
+          menuOverlayContent,
+          {
+            yPercent: -50,
+            duration: MENU_CLOSE_DURATION,
+          },
+          '<'
+        )
+        .to(
+          menuToggleLabel,
+          {
+            yPercent: 0,
+            duration: MENU_CLOSE_DURATION,
+          },
+          '<'
+        );
+
+      closeTimeline.eventCallback('onStart', () => {
+        setIsAnimating(true);
+      });
+
+      closeTimeline.eventCallback('onComplete', () => {
+        menuOverlay.style.pointerEvents = 'none';
+        menuOverlayContent.style.pointerEvents = 'none';
+
+        setIsAnimating(false);
+        setIsMenuOpen(false);
+        setIsHamburgerActive(false);
+        setIsOpening(false);
+        lenisRef.current?.start();
+        ScrollTrigger.refresh();
+        menuOpenTimelineRef.current?.pause(0);
+      });
+
+      menuCloseTimelineRef.current = closeTimeline;
 
       return () => {
         timeline.kill();
-        menuTimelineRef.current = null;
+        closeTimeline.kill();
+        menuOpenTimelineRef.current = null;
+        menuCloseTimelineRef.current = null;
 
         splitTextGroupsRef.current.forEach((group) => {
           group.forEach((split) => split.revert?.());
@@ -241,22 +327,30 @@ export const Home = ({}: HomeProps) => {
   );
 
   const handleMenuToggle = contextSafe(() => {
-    if (isAnimating || !menuTimelineRef.current) {
+    if (isAnimating) {
       return;
     }
 
-    setIsAnimating(true);
-
     if (isMenuOpen) {
+      if (!menuCloseTimelineRef.current) {
+        return;
+      }
+
+      setIsAnimating(true);
       setIsHamburgerActive(false);
       setIsOpening(false);
       lenisRef.current?.stop();
-      menuTimelineRef.current.reverse();
+      menuCloseTimelineRef.current.play(0);
     } else {
+      if (!menuOpenTimelineRef.current) {
+        return;
+      }
+
+      setIsAnimating(true);
       setIsHamburgerActive(true);
       setIsOpening(true);
       lenisRef.current?.stop();
-      menuTimelineRef.current.play(0);
+      menuOpenTimelineRef.current.play(0);
     }
   });
 
@@ -279,7 +373,7 @@ export const Home = ({}: HomeProps) => {
             disabled={isAnimating}
           >
             <div className='menu-toggle-label'>
-              <p ref={menuToggleLabelRef}>Menu</p>
+              <p ref={menuToggleLabelRef}>[ Menu ]</p>
             </div>
             <div
               className={`menu-hamburger-icon${
