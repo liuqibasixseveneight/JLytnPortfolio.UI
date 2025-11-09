@@ -4,7 +4,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ScrollTrigger as ScrollTriggerInstance } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import Lenis from 'lenis';
 
 import {
   SliderIndicators,
@@ -24,8 +23,6 @@ import { slides as defaultSlides, type Slide } from './slides';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const DEFAULT_VISIBLE_SLIDES = 3;
-const GSAP_DEFAULT_LAG_THRESHOLD = 1000;
-const GSAP_DEFAULT_LAG_ADJUST = 16;
 
 export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
   const slidesData = useMemo<Slide[]>(
@@ -42,7 +39,6 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
   const sliderIndicatorsRef = useRef<HTMLDivElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
   const scrollTriggerRef = useRef<ScrollTriggerInstance | null>(null);
-  const lenisRef = useRef<Lenis | null>(null);
   const activeIndexRef = useRef(0);
 
   const visibleSlides = useMemo<Slide[]>(() => {
@@ -60,35 +56,8 @@ export const HeroSlider = ({ slides: providedSlides }: HeroSliderProps) => {
     activeIndexRef.current = 0;
     setActiveIndex(0);
 
-    if (!totalSlides || typeof window === 'undefined') {
-      return () => {
-        cleanupResize();
-      };
-    }
-
-    const lenis = new Lenis({ autoRaf: false });
-    lenisRef.current = lenis;
-
-    const handleRaf = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    const handleLenisScroll = () => ScrollTrigger.update();
-
-    lenis.on('scroll', handleLenisScroll);
-    gsap.ticker.add(handleRaf);
-    gsap.ticker.lagSmoothing(0);
-
     return () => {
       cleanupResize();
-      lenis.off('scroll', handleLenisScroll);
-      lenis.destroy();
-      lenisRef.current = null;
-      gsap.ticker.remove(handleRaf);
-      gsap.ticker.lagSmoothing(
-        GSAP_DEFAULT_LAG_THRESHOLD,
-        GSAP_DEFAULT_LAG_ADJUST
-      );
     };
   }, [totalSlides]);
 
