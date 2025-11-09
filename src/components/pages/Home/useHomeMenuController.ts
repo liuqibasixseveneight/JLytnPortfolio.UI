@@ -8,6 +8,7 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(CustomEase, SplitText, ScrollTrigger);
 CustomEase.create('hop', '.87, 0, .13, 1');
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const MENU_SHIFT_DURATION = 0.65;
 const MENU_MEDIA_DURATION = 0.45;
