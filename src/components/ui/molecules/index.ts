@@ -2,6 +2,8 @@ export { SliderIndicators } from './SliderIndicators';
 export type { SliderIndicatorsProps } from './SliderIndicators';
 export { SliderProgressBar } from './SliderProgressBar';
 export type { SliderProgressBarProps } from './SliderProgressBar';
+export { MenuToggle } from './MenuToggle';
+export type { MenuToggleProps } from './MenuToggle';
 export { SliderImages } from './SliderImages';
 export type { SliderImagesProps } from './SliderImages';
 export { SliderTitle } from './SliderTitle';

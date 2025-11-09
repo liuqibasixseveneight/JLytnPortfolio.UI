@@ -1,5 +1,7 @@
 export { IconButton } from './IconButton';
 export type { IconButtonProps } from './IconButton';
+export { HamburgerIcon } from './HamburgerIcon';
+export type { HamburgerIconProps } from './HamburgerIcon';
 export { Logo } from './Logo';
 export type { LogoProps } from './Logo';
 export { SliderProgress } from './SliderProgress';
